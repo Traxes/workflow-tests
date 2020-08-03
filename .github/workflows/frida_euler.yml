@@ -70,7 +70,8 @@ jobs:
         cd /
         git clone --recurse-submodules https://github.com/frida/frida.git
         cd frida
-        sed -i 's/--strip//g' config.mk
+        sed 's/--strip//' -i config.mk
+        cat config.mk | grep FRIDA_MESONFLAGS_COMMON
         make core-linux-x86_64-thin
         
     - name: Upload artifacts
