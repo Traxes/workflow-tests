@@ -68,7 +68,14 @@ jobs:
         ln -s /opt/rh/devtoolset-9/root/bin/gcc* /usr/bin/
         ln -s /opt/rh/devtoolset-9/root/bin/g++ /usr/bin/
         cd /
-        git clone --recurse-submodules https://github.com/frida/frida.git && cd frida && sed 's/--strip//' -i config.mk && cat config.mk | grep FRIDA_MESONFLAGS_COMMON
+        git clone --recurse-submodules https://github.com/frida/frida.git 
+        
+    - name: Fix Frida
+      run: |
+        cd /frida 
+        sed 's/--strip//' -i config.mk
+        cat config.mk | grep FRIDA_MESONFLAGS_COMMON
+        sed '44s/interceptor/\/\/interceptor/' -i frida-core/lib/payload/exit-monitor.vala
         make core-linux-x86_64-thin
         
     - name: Upload artifacts
